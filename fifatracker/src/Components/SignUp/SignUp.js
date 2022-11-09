@@ -1,25 +1,19 @@
 import React from "react";
-import "./Login.css";
-import loginBtn from "../../images/loginbutton.png";
-import loginGoogleBtn from "../../images/googlesignin.png";
+import "./SignUp.css";
 import TextField from "@mui/material/TextField";
 import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
   onAuthStateChanged,
   signOut,
 } from "firebase/auth";
 import { auth } from "../../Firebase App.js";
 import { useNavigate } from "react-router-dom";
-import HandleLogin from "./HandleLogin";
 
-export default function Login() {
+export default function SignUp() {
   const [registerEmail, setRegisterEmail] = React.useState("");
   const [registerPassword, setRegisterPasword] = React.useState("");
-  const [loginEmail, setLoginEmail] = React.useState("");
-  const [loginPassword, setLoginPassword] = React.useState("");
   const [user, setUser] = React.useState({});
   const navigate = useNavigate();
+
 
   React.useEffect(() => {
     onAuthStateChanged(auth, (currentUser) => {
@@ -27,21 +21,21 @@ export default function Login() {
     });
   });
 
-  function handleLoginButton() {
-    new HandleLogin(loginEmail, loginPassword).Login();
-    if (user) {
+   function  handleLoginButton(){
+    // new HandleLogin(loginEmail, loginPassword).Login();
+    if(user){
       navigate("/landing");
     }
-  }
+    
+   }
 
-  function navigateToCreateAnAccount() {
-    navigate("/signup");
+   function navigateToSignIn() {
+    navigate("/login");
   }
 
   return (
     <div className="login--container">
-      <h3 className="header--text">Please sign in to continue</h3>
-      <div className="login--form">
+      <h3 className="header--text">Please sign up or login to continue</h3>
         <div className="form--email">
           <label className="form--label" for="email">
             Email
@@ -55,11 +49,9 @@ export default function Login() {
             placeholder="david@example.com"
             maxLength="63"
             onChange={(event) => {
-              setLoginEmail(event.target.value);
+              setRegisterEmail(event.target.value);
             }}
           />
-        </div>
-        <div className="form--email">
           <label className="form--label" for="password">
             Password
           </label>
@@ -71,19 +63,18 @@ export default function Login() {
             variant="filled"
             maxLength="20"
             onChange={(event) => {
-              setLoginPassword(event.target.value);
+              setRegisterPasword(event.target.value);
             }}
           />
-        </div>
-        <div className="sign--in--buttons">
-          <input type="image" src={loginGoogleBtn} />
-          <input type="image" src={loginBtn} onClick={handleLoginButton} />
-        </div>
-        <p className="interactive--text">Forgot password?</p>
-        <p onClick={navigateToCreateAnAccount} className="interactive--text">
-          Create an account
-        </p>
-      </div>
+                  </div>
+
+          <button className="sign--up--button"
+            onClick={handleLoginButton}>
+          Create account NOW</button>
+          <p onClick={navigateToSignIn} className="interactive--text">Already got an account?</p>
     </div>
+
+    
   );
 }
+ 
