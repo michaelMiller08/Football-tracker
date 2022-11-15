@@ -11,15 +11,14 @@ import {
 } from "firebase/auth";
 import { auth } from "../../Firebase App.js";
 import { useNavigate } from "react-router-dom";
+
 import HandleLogin from "./HandleLogin";
 
 export default function Login() {
-  const [registerEmail, setRegisterEmail] = React.useState("");
-  const [registerPassword, setRegisterPasword] = React.useState("");
   const [loginEmail, setLoginEmail] = React.useState("");
   const [loginPassword, setLoginPassword] = React.useState("");
   const [user, setUser] = React.useState({});
-  const navigate = useNavigate();
+  const usenavigater = useNavigate();
 
   React.useEffect(() => {
     onAuthStateChanged(auth, (currentUser) => {
@@ -30,14 +29,21 @@ export default function Login() {
   function handleLoginButton() {
     new HandleLogin(loginEmail, loginPassword).Login();
     if (user) {
-      navigate("/landing");
+      usenavigater("/landing");
     }
   }
 
   function navigateToCreateAnAccount() {
-    navigate("/signup");
+    usenavigater("/signup");
   }
 
+  function handleGoogleSignIn() {
+    window.alert("Coming soon!");
+  }
+
+  if (user) {
+   usenavigater("/landing");
+  }
   return (
     <div className="login--container">
       <h3 className="header--text">Please sign in to continue</h3>
@@ -76,7 +82,11 @@ export default function Login() {
           />
         </div>
         <div className="sign--in--buttons">
-          <input type="image" src={loginGoogleBtn} />
+          <input
+            type="image"
+            src={loginGoogleBtn}
+            onClick={handleGoogleSignIn}
+          />
           <input type="image" src={loginBtn} onClick={handleLoginButton} />
         </div>
         <p className="interactive--text">Forgot password?</p>

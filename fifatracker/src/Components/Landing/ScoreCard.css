@@ -1,0 +1,52 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Saira&display=swap");
+body{
+  margin: 0;
+}
+
+.score--card {
+  display: flex;
+  width: 200px;
+  height: 137px;
+  color: white;
+  justify-content: center;
+  margin-right: 10px;
+  flex: 0 0 auto;
+  background-image: url("../../images/Card Live.png");
+  background-repeat: no-repeat;
+}
+
+.cardImg {
+  display: flex;
+  border-radius: 20px;
+
+}
+.score--info {
+  position: relative;
+  text-align: center;
+margin: auto;
+}
+
+.date {
+  font-family: "Saira";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+}
+
+.players {
+  font-family: "Saira";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 17px;
+}
+
+.score {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 17px;
+}

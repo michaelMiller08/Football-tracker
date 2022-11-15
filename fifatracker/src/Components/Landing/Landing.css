@@ -1,0 +1,39 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+
+.landing {
+  background-color: #2196f3;
+
+}
+
+.score--card--div {
+    display: flex;
+  flex-direction: row;
+   flex-wrap: nowrap;
+
+  overflow-x: auto;
+}
+
+.title {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 17px;
+  /* or 69% */
+
+  text-align: center;
+
+  color: #ffffff;
+
+  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25), 0px 4px 4px rgba(3, 3, 3, 0.25);
+}
+
+.sub--title{
+    font-family: 'Poppins';
+font-style: normal;
+font-weight: 600;
+font-size: 12px;
+line-height: 17px;
+color: white;
+margin-left: 20px;
+}
