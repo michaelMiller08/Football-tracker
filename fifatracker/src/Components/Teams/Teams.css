@@ -1,0 +1,54 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  flex-direction: column;
+}
+
+.create--game--btn {
+  width: 305px;
+  height: 31px;
+  margin-bottom: 10px;
+  background: #66bb6a;
+  border-radius: 9px;
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 20px;
+  border-color: #66bb6a;
+  line-height: 17px;
+
+  text-align: center;
+
+  color: #ffffff;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.submit--btn {
+  width: 305px;
+  height: 31px;
+
+  background: #66bb6a;
+  border-radius: 9px;
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 20px;
+  border-color: #66bb6a;
+  line-height: 17px;
+
+  text-align: center;
+
+  color: #ffffff;
+}
+
+.TextField {
+  width: 400px;
+  padding-bottom: 10px;
+}

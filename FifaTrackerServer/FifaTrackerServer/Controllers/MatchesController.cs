@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using FifaTrackerServer.Data;
 using FifaTrackerServer.Models;
+using System.Collections;
 
 namespace FifaTrackerServer.Controllers
 {
@@ -17,6 +18,7 @@ namespace FifaTrackerServer.Controllers
         private readonly ApplicationDbContext _context;
 
         public MatchesController(ApplicationDbContext context)
+
         {
             _context = context;
         }
@@ -25,7 +27,65 @@ namespace FifaTrackerServer.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Match>>> GetMatches()
         {
+            Response.Headers.Add("Access-Control-Allow-Origin", "http://localhost:3000");
+
             return await _context.Matches.ToListAsync();
+        }
+
+        // GET: api/Matches/Scheduled
+        [HttpGet("Scheduled")]
+        public async Task<ActionResult<IEnumerable<Match>>> GetScheduledMatches()
+        {
+            var dateTime = DateTime.Now;
+            var matches =  await _context.Matches.ToListAsync();
+            var result =  matches.Where(x => dateTime.CompareTo(x.Date.ToDateTime(x.Time)) < 0).ToList();
+            return result;
+        }
+
+        // GET: api/Matches/ScheduledForTeam
+        [HttpGet("ScheduledForTeam/{teamId}")]
+        public async Task<ActionResult<IEnumerable<Match>>> GetScheduledForTeamMatches(int teamID)
+        {
+            var dateTime = DateTime.Now;
+            var matches = await _context.Matches.ToListAsync();
+            var team = await _context.Team.FindAsync(teamID);
+            //ToDo:error handling
+            if(team == null)
+            {
+                return NotFound("team not found");
+            }
+            var matchesForTeam = matches.Where(p => team.Members.Any(x => x == p.Creator));
+
+            var result = matchesForTeam.Where(x => dateTime.CompareTo(x.Date.ToDateTime(x.Time)) < 0).ToList();
+            return result;
+        }
+        // GET: api/Matches/Previous
+        [HttpGet("Previous")]
+        public async Task<ActionResult<IEnumerable<Match>>> GetPreviousMatches()
+        {
+            var dateTime = DateTime.Now;
+            var matches = await _context.Matches.ToListAsync();
+            var result = matches.Where(x => dateTime.CompareTo(x.Date.ToDateTime(x.Time)) > 0).ToList();
+            return result;
+        }
+
+        // GET: api/Matches/PreviousForTeam
+        [HttpGet("PreviousForTeam/{teamId}")]
+        public async Task<ActionResult<IEnumerable<Match>>> GetPreviousForTeamMatches(int teamID)
+        {
+            var dateTime = DateTime.Now;
+            var matches = await _context.Matches.ToListAsync();
+            var team = await _context.Team.FindAsync(teamID);
+            if (team == null)
+            {
+                return NotFound("team not found");
+            }
+
+            //ToDO: error handling
+            var matchesForTeam = matches.Where(p => team.Members.Any(x => x == p.Creator));
+
+            var result = matchesForTeam.Where(x => dateTime.CompareTo(x.Date.ToDateTime(x.Time)) > 0).ToList();
+            return result;
         }
 
         // GET: api/Matches/5
@@ -78,6 +138,8 @@ namespace FifaTrackerServer.Controllers
         [HttpPost]
         public async Task<ActionResult<Match>> PostMatch(Match match)
         {
+            Response.Headers.Add("Access-Control-Allow-Origin", "http://localhost:3000");
+
             _context.Matches.Add(match);
             await _context.SaveChangesAsync();
 

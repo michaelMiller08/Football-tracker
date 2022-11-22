@@ -28,7 +28,7 @@ export default function SignUp() {
       window.alert("you can now login");
 
       if (user) {
-        navigate("/login");
+        navigate("/");
       }
     } catch (error) {
       //TODO: temporary only!!
@@ -37,7 +37,7 @@ export default function SignUp() {
   }
 
   function navigateToSignIn() {
-    navigate("/login");
+    navigate("/");
   }
 
   return (

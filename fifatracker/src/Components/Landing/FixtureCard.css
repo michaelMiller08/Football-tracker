@@ -1,0 +1,54 @@
+.card--container {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  position: relative;
+}
+
+.card {
+  display: flex;
+  align-self: start;
+  width: 274px;
+  height: 80px;
+  background: #0b4aa0;
+}
+
+.card--info {
+  width: 100%;
+}
+
+.players--info {
+  text-align: left;
+  margin-left: 10px;
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 17px;
+
+  color: #ffffff;
+}
+.time {
+  display: flex;
+  float: right;
+  margin-right: 10px;
+  font-family: "Poppins";
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 17px;
+
+  color: #ffffff;
+}
+.date {
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 17px;
+
+  color: #ffffff;
+}

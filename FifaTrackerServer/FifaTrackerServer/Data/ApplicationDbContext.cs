@@ -11,5 +11,7 @@ namespace FifaTrackerServer.Data
         }
 
         public DbSet<Match> Matches { get; set; }
+
+        public DbSet<FifaTrackerServer.Models.Team> Team { get; set; }
     }
 }

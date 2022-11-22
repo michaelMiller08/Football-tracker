@@ -1,4 +1,6 @@
 .navigation--bar {
     background-color: #0D47A1;
+    display:flex;
+    text-decoration: white;
 }
 

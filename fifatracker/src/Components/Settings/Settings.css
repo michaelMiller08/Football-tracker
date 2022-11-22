@@ -1,27 +1,24 @@
-.container{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    
-    
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 
-.logout--btn{
-    width: 305px;
-height: 31px;
+.logout--btn {
+  width: 305px;
+  height: 31px;
 
-background: #66BB6A;
-border-radius: 9px;
-font-family: 'Poppins';
-font-style: normal;
-font-weight: 600;
-font-size: 20px;
-border-color:#66BB6A;
-line-height: 17px;
+  background: #66bb6a;
+  border-radius: 9px;
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 20px;
+  border-color: #66bb6a;
+  line-height: 17px;
 
-text-align: center;
+  text-align: center;
 
-color: #FFFFFF;
-
+  color: #ffffff;
 }
