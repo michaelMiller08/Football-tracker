@@ -12,15 +12,31 @@ export default function Landing(props) {
   const [teamId, setTeamId] = React.useState(0);
   const navigate = useNavigate();
 
-  React.useEffect(() => {
-    if (user) {
-      axios
-        .get(`https://localhost:7156/api/Teams/ForPlayer/${user.email}`)
-        .then((response) => setTeamId(response.data.id));
-    }
+  // React.useEffect(() => {
+  //   async () => {
+  //     if (user) {
+  //       await axios
+  //         .get(`https://localhost:7156/api/Teams/ForPlayer/${user.email}`)
+  //         .then((response) => setTeamId(response.data.id));
+  //     }
+  //   };
 
-    // empty dependency array means this effect will only run once (like componentDidMount in classes)
-  });
+  //   // empty dependency array means this effect will only run once (like componentDidMount in classes)
+  // });
+
+  React.useEffect(() => {
+    (async () => {
+      if (user) {
+        await axios
+          .get(`https://localhost:7156/api/Teams/ForPlayer/${user.email}`)
+          .then((response) => setTeamId(response.data.id));
+      }
+    })();
+
+    return () => {
+      // this now gets called when the component unmounts
+    };
+  }, [user]);
 
   if (!user) {
     return navigate("/");

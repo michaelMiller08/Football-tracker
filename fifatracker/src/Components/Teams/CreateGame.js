@@ -36,7 +36,10 @@ export default function CreateGame(props) {
     };
     const response = await axios
       .post("https://localhost:7156/api/Matches", Match)
-      .then((x) => {})
+      .then(function(res) {
+        if(res.status == 201)
+        window.alert("success")
+      })
       .catch((error) => {
         console.log("error is: " + error);
         window.alert("All entries must be completed");
@@ -45,7 +48,7 @@ export default function CreateGame(props) {
 
   return (
     <div>
-      <button className="create--game--btn" onClick={handleOpen}>
+      <button className="btns" onClick={handleOpen}>
         Create Game
       </button>
       <Modal

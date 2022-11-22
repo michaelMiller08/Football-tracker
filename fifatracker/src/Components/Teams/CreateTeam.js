@@ -26,13 +26,13 @@ export default function CreateTeam(props) {
   async function addTeam() {
     const Team = {
       teamName: teamName,
-      members: [props.email]
+      members: [props.email],
     };
 
     const response = await axios
       .post("https://localhost:7156/api/Teams", Team)
       .then((x) => {
-        window.alert("success")
+        window.alert("success");
       })
       .catch((error) => {
         console.log("error is: " + error);
@@ -42,12 +42,11 @@ export default function CreateTeam(props) {
     // if (response.status = 201) {
     //   window.alert(response);
     // }
-
   }
 
   return (
     <div>
-      <button className="create--game--btn" onClick={handleOpen}>
+      <button className="btns" onClick={handleOpen}>
         Create Team
       </button>
       <Modal

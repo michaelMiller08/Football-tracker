@@ -6,15 +6,20 @@ import ScoreCard from "./ScoreCard";
 export default function RenderScoreCards(props) {
   const [getResponse, setResponse] = React.useState(null);
 
-  useEffect(() => {
-    // GET request using axios inside useEffect React hook
-    if (props.teamId) {
-      axios
-        .get(
-          `https://localhost:7156/api/Matches/PreviousForTeam/${props.teamId}`
-        )
-        .then((response) => setResponse(response.data));
-    }
+  React.useEffect(() => {
+    (async () => {
+      if (props.teamId > 0) {
+        await axios
+          .get(
+            `https://localhost:7156/api/Matches/PreviousForTeam/${props.teamId}`
+          )
+          .then((response) => setResponse(response.data));
+      }
+    })();
+
+    return () => {
+      // this now gets called when the component unmounts
+    };
   }, [props.teamId]);
 
   if (getResponse) {
