@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using FifaTrackerServer.Data;
 using FifaTrackerServer.Models;
 using System.Collections;
+using FifaTrackerServer.Migrations;
 
 namespace FifaTrackerServer.Controllers
 {
@@ -69,8 +70,30 @@ namespace FifaTrackerServer.Controllers
             return result;
         }
 
-        // GET: api/Matches/PreviousForTeam
-        [HttpGet("PreviousForTeam/{teamId}")]
+        [HttpPut("UpdateScore/{matchId}")]
+        public async Task<ActionResult> PutAddMember(int matchId, int creatorScore, int opponentScore)
+        {
+
+
+            var match = await _context.Matches.FindAsync(matchId);
+
+            if(match == null)
+            {
+                return NotFound();
+            }
+
+
+            match.CreatorScore = creatorScore;
+            match.OpponentScore = opponentScore;
+            _context.Update(match);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+
+            // GET: api/Matches/PreviousForTeam
+            [HttpGet("PreviousForTeam/{teamId}")]
         public async Task<ActionResult<IEnumerable<Match>>> GetPreviousForTeamMatches(int teamID)
         {
             var dateTime = DateTime.Now;
@@ -140,6 +163,29 @@ namespace FifaTrackerServer.Controllers
         {
             Response.Headers.Add("Access-Control-Allow-Origin", "http://localhost:3000");
 
+            if (match == null)
+            {
+                return BadRequest("Invalid Match");
+            }
+
+            //both players have to be on same team
+            var teams = await _context.Team.ToListAsync();
+            var team = teams.Where(t => t.Members.Contains(match.Creator)).First();
+
+            if(!team.Members.Contains(match.Opponent))
+            {
+                return BadRequest("Player & Opponent not on same team!");
+            }
+
+            //make sure match is the in the future
+            var matchIsInFuture = DateTime.Now.CompareTo(match.Date.ToDateTime(match.Time));
+
+            if(matchIsInFuture > 0)
+            {
+                return BadRequest("Match has to be in the future");
+            }
+            
+            
             _context.Matches.Add(match);
             await _context.SaveChangesAsync();
 

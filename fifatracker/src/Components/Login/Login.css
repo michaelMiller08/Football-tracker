@@ -2,10 +2,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap");
 
 body {
-    margin: 0%;
-    background-color: #2196f3;
-  }
-  
+  margin: 0%;
+  background-color: #2196f3;
+}
+
 .login--container {
   display: flex;
   flex-direction: column;
@@ -14,9 +14,9 @@ body {
   min-height: 100vh;
   width: 100%;
   align-items: center;
+  text-indent: 10px;
+  margin-left: 10px;
 }
-
-
 
 .header--text {
   font-family: "Poppins";

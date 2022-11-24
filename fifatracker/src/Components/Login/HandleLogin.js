@@ -1,13 +1,7 @@
-import React from "react";
 import "./Login.css";
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  onAuthStateChanged,
-  signOut,
-} from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../Firebase App.js";
-
+import ToastMaker from "../ToastMaker";
 
 export default class HandleLogin {
   constructor(email, password) {
@@ -16,18 +10,12 @@ export default class HandleLogin {
   }
 
   async Login() {
-
     try {
       await signInWithEmailAndPassword(auth, this.email, this.password);
     } catch (error) {
       //TODO: temporary only!!
       console.log(error);
-      window.alert(error);
+      new ToastMaker().ShowErrorToast(error.message);
     }
   }
-  //   const logout = async () => {
-  //     await signOut(auth);
-  //   };
 }
-
-//   const register = async () => {};

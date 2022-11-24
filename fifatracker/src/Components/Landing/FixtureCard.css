@@ -10,7 +10,7 @@
   display: flex;
   align-self: start;
   width: 274px;
-  height: 80px;
+  min-height: 80px;
   background: #0b4aa0;
 }
 

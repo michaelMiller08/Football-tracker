@@ -10,6 +10,7 @@ using FifaTrackerServer.Models;
 using FifaTrackerServer.Migrations;
 using Newtonsoft.Json;
 using System.Text.Json.Nodes;
+using Microsoft.IdentityModel.Tokens;
 
 namespace FifaTrackerServer.Controllers
 {
@@ -101,6 +102,17 @@ namespace FifaTrackerServer.Controllers
                 return BadRequest("Invalid team");
             }
 
+            if(team.TeamName.IsNullOrEmpty() | team.TeamName.Length <= 5)
+            {
+                return BadRequest("Team name too short");
+            }
+
+
+            if(PlayerInAnyTeam(team.Members.First()))
+            {
+                return BadRequest("You are already in a team");
+            }
+
             _context.Team.Add(team);
             await _context.SaveChangesAsync();
 
@@ -138,6 +150,13 @@ namespace FifaTrackerServer.Controllers
             {
                 return BadRequest(newMember + " is already in the team!");
             }
+
+            var teams = await _context.Team.ToListAsync();
+            if(teams.Any(x => x.Members.Contains(newMember)))
+            {
+                return BadRequest(newMember + " is already in a team!");
+
+            }
             team.Members.Add(newMember);
             _context.Update(team);
             await _context.SaveChangesAsync();
@@ -155,7 +174,7 @@ namespace FifaTrackerServer.Controllers
                 return NotFound();
             }
 
-            if(team.Members.Contains(member))
+            if(!team.Members.Contains(member))
             {
                 return BadRequest(member + " is not in the team");
             }
@@ -174,6 +193,18 @@ namespace FifaTrackerServer.Controllers
         private bool TeamExists(int id)
         {
             return _context.Team.Any(e => e.Id == id);
+        }
+
+        private bool MemberExistsInTeam(int Teamid, string email)
+        {
+            var team =  _context.Team.Where(t => t.Id == Teamid).First();
+            return team.Members.Contains(email);
+        }
+
+        private bool PlayerInAnyTeam (string email)
+        {
+            return _context.Team.Any(e => e.Members.Contains(email));
+
         }
     }
 }

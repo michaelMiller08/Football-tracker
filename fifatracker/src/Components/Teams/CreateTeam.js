@@ -3,6 +3,7 @@ import axios from "axios";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
+import ToastMaker from "../ToastMaker";
 
 export default function CreateTeam(props) {
   const [open, setOpen] = React.useState(false);
@@ -32,16 +33,12 @@ export default function CreateTeam(props) {
     const response = await axios
       .post("https://localhost:7156/api/Teams", Team)
       .then((x) => {
-        window.alert("success");
-      })
-      .catch((error) => {
-        console.log("error is: " + error);
-        window.alert("All entries must be completed");
-      });
+        new ToastMaker().ShowSuccessToast();
 
-    // if (response.status = 201) {
-    //   window.alert(response);
-    // }
+      })
+      .catch(function (error) {
+       new ToastMaker().ShowErrorToast(error.response.data);
+      });
   }
 
   return (

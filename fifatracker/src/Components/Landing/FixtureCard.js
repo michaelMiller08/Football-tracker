@@ -12,6 +12,7 @@ export default function FixtureCard(props) {
             </div>
         </div>
       </div>
+      
     </div>
   );
 }

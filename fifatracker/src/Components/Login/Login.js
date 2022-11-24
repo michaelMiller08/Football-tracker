@@ -3,17 +3,13 @@ import "./Login.css";
 import loginBtn from "../../images/loginbutton.png";
 import loginGoogleBtn from "../../images/googlesignin.png";
 import TextField from "@mui/material/TextField";
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  onAuthStateChanged,
-  signOut,
-} from "firebase/auth";
 import { auth } from "../../Firebase App.js";
 import { useNavigate } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
-
 import HandleLogin from "./HandleLogin";
+import { ToastContainer, toast } from "react-toastify";
+
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Login(props) {
   const [loginEmail, setLoginEmail] = React.useState("");
@@ -22,7 +18,8 @@ export default function Login(props) {
   const usenavigater = useNavigate();
 
   function handleLoginButton() {
-    new HandleLogin(loginEmail, loginPassword).Login();
+    var login = new HandleLogin(loginEmail, loginPassword);
+    login.Login();
     if (user) {
       usenavigater("/landing");
     }

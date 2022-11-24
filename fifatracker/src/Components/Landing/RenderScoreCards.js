@@ -26,6 +26,7 @@ export default function RenderScoreCards(props) {
     return getResponse.map((item) => {
       return (
         <ScoreCard
+          id={item.id}
           date="1/1/20021"
           creatorEmail={item.creator}
           opponentEmail={item.opponent}

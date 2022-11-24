@@ -6,6 +6,7 @@ import "./Teams.css";
 import { useAuthState } from "react-firebase-hooks/auth";
 import CreateGame from "./CreateGame.js";
 import CreateTeam from "./CreateTeam.js";
+import FindATeam from "./FindATeam.js";
 
 export default function Teams() {
   const [user] = useAuthState(auth);
@@ -21,6 +22,7 @@ export default function Teams() {
         <div className="container">
           <CreateGame email={user.email} />
           <CreateTeam email={user.email}/>
+          <FindATeam email={user.email}/>
         </div>
       </div>
     </div>

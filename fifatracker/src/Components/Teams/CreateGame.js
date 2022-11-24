@@ -3,6 +3,7 @@ import axios from "axios";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
+import ToastMaker from "../ToastMaker";
 
 export default function CreateGame(props) {
   const [open, setOpen] = React.useState(false);
@@ -31,19 +32,19 @@ export default function CreateGame(props) {
       time: time + ":00",
       creator: props.email,
       opponent: opponentEmail,
-      creatorScore: 0,
-      opponentScore: 0,
+      creatorScore: -1,
+      opponentScore: -1,
     };
+
     const response = await axios
       .post("https://localhost:7156/api/Matches", Match)
       .then(function(res) {
         if(res.status == 201)
-        window.alert("success")
+        new ToastMaker().ShowSuccessToast();
       })
-      .catch((error) => {
-        console.log("error is: " + error);
-        window.alert("All entries must be completed");
-      });
+      .catch(function (error) {
+        new ToastMaker().ShowErrorToast(error.response.data);
+       })
   }
 
   return (

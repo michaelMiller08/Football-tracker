@@ -8,6 +8,7 @@ import {
 } from "firebase/auth";
 import { auth } from "../../Firebase App.js";
 import { useNavigate } from "react-router-dom";
+import ToastMaker from "../ToastMaker";
 
 export default function SignUp() {
   const [registerEmail, setRegisterEmail] = React.useState("");
@@ -32,7 +33,7 @@ export default function SignUp() {
       }
     } catch (error) {
       //TODO: temporary only!!
-      window.alert(error);
+      new ToastMaker().ShowErrorToast(error.message);
     }
   }
 
