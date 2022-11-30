@@ -11,6 +11,7 @@ using FifaTrackerServer.Migrations;
 using Newtonsoft.Json;
 using System.Text.Json.Nodes;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FifaTrackerServer.Controllers
 {
@@ -26,6 +27,7 @@ namespace FifaTrackerServer.Controllers
         }
 
         // GET: api/Teams
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Team>>> GetTeam()
         {
@@ -33,6 +35,7 @@ namespace FifaTrackerServer.Controllers
         }
 
         // GET: api/Teams/ForPlayer
+        [Authorize]
         [HttpGet("ForPlayer/{email}")]
         public async Task<ActionResult<Team>> GetTeamForPlayer(string email)
         {
@@ -48,6 +51,7 @@ namespace FifaTrackerServer.Controllers
         }
 
         // GET: api/Teams/5
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<Team>> GetTeam(int id)
         {
@@ -94,6 +98,7 @@ namespace FifaTrackerServer.Controllers
 
         // POST: api/Teams
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<Team>> PostTeam(Team team)
         {
@@ -113,6 +118,11 @@ namespace FifaTrackerServer.Controllers
                 return BadRequest("You are already in a team");
             }
 
+            if(await _context.Team.AnyAsync(t => t.TeamName == team.TeamName))
+            {
+                return BadRequest("Team name already exists");
+            }
+
             _context.Team.Add(team);
             await _context.SaveChangesAsync();
 
@@ -120,6 +130,7 @@ namespace FifaTrackerServer.Controllers
         }
 
         // DELETE: api/Teams/5
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTeam(int id)
         {
@@ -136,6 +147,7 @@ namespace FifaTrackerServer.Controllers
         }
 
         //addmember
+        [Authorize]
         [HttpPut("AddMember/{teamId}")]
         public async Task<ActionResult>PutAddMember(int teamId, [FromBody]string newMember)
         {
@@ -165,6 +177,7 @@ namespace FifaTrackerServer.Controllers
 
         }
 
+        [Authorize]
         [HttpDelete("DeleteMember/{teamId}")]
         public async Task<ActionResult> DeleteMember(int teamId, [FromBody] string member)
         {

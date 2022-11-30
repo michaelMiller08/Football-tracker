@@ -28,7 +28,11 @@ export default function Landing(props) {
     (async () => {
       if (user) {
         await axios
-          .get(`https://localhost:7156/api/Teams/ForPlayer/${user.email}`)
+          .get(`https://localhost:7156/api/Teams/ForPlayer/${user.email}`, {
+            headers:{
+              'Authorization': `Bearer ${user.accessToken}`
+            }
+          })
           .then((response) => setTeamId(response.data.id));
       }
     })();

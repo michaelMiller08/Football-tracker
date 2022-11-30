@@ -5,6 +5,8 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import ToastMaker from "../ToastMaker";
 import axios from "axios";
+import { auth } from "../../Firebase App.js";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 export default function ScoreCard(props) {
   const [open, setOpen] = React.useState(false);
@@ -12,6 +14,7 @@ export default function ScoreCard(props) {
   const handleClose = () => setOpen(false);
   const [scoreOne, setScoreOne] = React.useState(0);
   const [scoreTwo, setScoreTwo] = React.useState(0);
+  const [user] = useAuthState(auth);
 
   const style = {
     position: "absolute",
@@ -27,8 +30,16 @@ export default function ScoreCard(props) {
   };
 
   function handleClick() {
-    if (!open) {
-      handleOpen();
+    if (props.playerScore == -1 && props.opponentScore == -1) {
+      if (props.creatorEmail == user.email) {
+        if (!open) {
+          handleOpen();
+        }
+      } else {
+        new ToastMaker().ShowErrorToast(
+          "Only the creator can edit the result!"
+        );
+      }
     }
   }
 
@@ -53,20 +64,34 @@ export default function ScoreCard(props) {
         handleClose();
       })
       .catch(function (error) {
-        new ToastMaker().ShowErrorToast(error.response.data);
+        new ToastMaker().ShowErrorToast("Failure: " + error.response.data);
       });
   }
 
+  function getScoreText() {
+    let scoreText = (
+      <p>
+        {props.playerScore}-{props.opponentScore}
+      </p>
+    );
+    if (props.playerScore == -1 && props.opponentScore == -1) {
+      scoreText = <p>Update Score</p>;
+    }
+
+    return scoreText;
+  }
   return (
     <div className="score--card" onClick={handleClick}>
       <div className="score--info">
         <p className="date">{props.date}</p>
-        <p className="players">
-          {props.creatorEmail} v {props.opponentEmail}
+        <div className="players">
+        <p>
+          {props.creatorEmail}
         </p>
-        <p className="score">
-          {props.playerScore}-{props.opponentScore}
-        </p>
+        <p>V</p>
+        <p>{props.opponentEmail}</p>
+        </div>
+        <p className="score">{getScoreText()}</p>
       </div>
       <div>
         <Modal
@@ -76,7 +101,7 @@ export default function ScoreCard(props) {
           aria-describedby="modal-modal-description"
         >
           <Box sx={style}>
-            <p id="modal-modal-title" variant="h2" component="h2">
+            <p id="modal-modal-title" variant="h2" component="h2" className="modal-modal-title">
               Input The Scores From This Game
             </p>
             <div className="form">

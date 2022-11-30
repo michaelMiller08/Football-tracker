@@ -1,16 +1,24 @@
 import axios from "axios";
 import React, { useEffect } from "react";
 import FixtureCard from "./FixtureCard";
+import { auth } from "../../Firebase App.js";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 export default function RenderFixtureCards(props) {
   const [getResponse, setResponse] = React.useState(null);
+  const [user] = useAuthState(auth);
+
 
   React.useEffect(() => {
     (async () => {
       if (props.teamId > 0) {
         await axios
           .get(
-            `https://localhost:7156/api/Matches/ScheduledForTeam/${props.teamId}`
+            `https://localhost:7156/api/Matches/ScheduledForTeam/${props.teamId}`,{
+              headers:{
+                'Authorization': `Bearer ${user.accessToken}`
+              }
+            }
           )
           .then((response) => setResponse(response.data));
       }

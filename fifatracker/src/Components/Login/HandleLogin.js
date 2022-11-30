@@ -14,7 +14,6 @@ export default class HandleLogin {
       await signInWithEmailAndPassword(auth, this.email, this.password);
     } catch (error) {
       //TODO: temporary only!!
-      console.log(error);
       new ToastMaker().ShowErrorToast(error.message);
     }
   }

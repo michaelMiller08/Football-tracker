@@ -2,13 +2,14 @@ import React from "react";
 import axios from "axios";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import ToastMaker from "../ToastMaker";
+import { auth } from "../../Firebase App.js";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 export default function FindATeam(props) {
   const [open, setOpen] = React.useState(false);
@@ -17,6 +18,7 @@ export default function FindATeam(props) {
   const [teamList, setTeamList] = React.useState([]);
   const [teamName, setTeamName] = React.useState([]);
   const [teamId, setTeamId] = React.useState([]);
+  const [user] = useAuthState(auth);
   const ITEM_HEIGHT = 48;
   const ITEM_PADDING_TOP = 8;
   const MenuProps = {
@@ -44,7 +46,11 @@ export default function FindATeam(props) {
   React.useEffect(() => {
     (async () => {
       await axios
-        .get("https://localhost:7156/api/Teams")
+        .get("https://localhost:7156/api/Teams", {
+          headers: {
+            Authorization: `Bearer ${user.accessToken}`,
+          },
+        })
         .then((response) => setTeamList(response.data));
     })();
 
@@ -65,20 +71,22 @@ export default function FindATeam(props) {
     let Config = {
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${user.accessToken}`,
       },
     };
 
     const response = await axios
       .put(
         `https://localhost:7156/api/Teams/AddMember/${teamId}`,
-        JSON.stringify(props.email), Config
+        JSON.stringify(props.email),
+        Config
       )
       .then(function (res) {
         new ToastMaker().ShowSuccessToast();
       })
       .catch(function (error) {
         new ToastMaker().ShowErrorToast(error.response.data);
-       })
+      });
   }
 
   const handleChange = (event) => {
@@ -94,7 +102,7 @@ export default function FindATeam(props) {
   return (
     <div>
       <button className="btns" onClick={handleOpen}>
-        Join  A Team
+        Join A Team
       </button>
       <Modal
         open={open}

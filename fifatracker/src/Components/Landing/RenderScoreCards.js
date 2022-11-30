@@ -2,16 +2,26 @@ import axios from "axios";
 import React, { useEffect } from "react";
 import FixtureCard from "./FixtureCard";
 import ScoreCard from "./ScoreCard";
+import { auth } from "../../Firebase App.js";
+import { useAuthState } from "react-firebase-hooks/auth";
+
 
 export default function RenderScoreCards(props) {
   const [getResponse, setResponse] = React.useState(null);
+  const [user] = useAuthState(auth);
+
 
   React.useEffect(() => {
     (async () => {
+
       if (props.teamId > 0) {
         await axios
           .get(
-            `https://localhost:7156/api/Matches/PreviousForTeam/${props.teamId}`
+            `https://localhost:7156/api/Matches/PreviousForTeam/${props.teamId}`,{
+              headers:{
+                'Authorization': `Bearer ${user.accessToken}`
+              }
+            }
           )
           .then((response) => setResponse(response.data));
       }
@@ -27,7 +37,7 @@ export default function RenderScoreCards(props) {
       return (
         <ScoreCard
           id={item.id}
-          date="1/1/20021"
+          date={item.date}
           creatorEmail={item.creator}
           opponentEmail={item.opponent}
           playerScore={item.creatorScore}

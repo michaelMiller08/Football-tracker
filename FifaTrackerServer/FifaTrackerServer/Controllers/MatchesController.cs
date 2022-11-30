@@ -9,6 +9,7 @@ using FifaTrackerServer.Data;
 using FifaTrackerServer.Models;
 using System.Collections;
 using FifaTrackerServer.Migrations;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FifaTrackerServer.Controllers
 {
@@ -25,15 +26,17 @@ namespace FifaTrackerServer.Controllers
         }
 
         // GET: api/Matches
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Match>>> GetMatches()
         {
             Response.Headers.Add("Access-Control-Allow-Origin", "http://localhost:3000");
-
+            
             return await _context.Matches.ToListAsync();
         }
 
         // GET: api/Matches/Scheduled
+        [Authorize]
         [HttpGet("Scheduled")]
         public async Task<ActionResult<IEnumerable<Match>>> GetScheduledMatches()
         {
@@ -44,6 +47,7 @@ namespace FifaTrackerServer.Controllers
         }
 
         // GET: api/Matches/ScheduledForTeam
+        [Authorize]
         [HttpGet("ScheduledForTeam/{teamId}")]
         public async Task<ActionResult<IEnumerable<Match>>> GetScheduledForTeamMatches(int teamID)
         {
@@ -61,6 +65,7 @@ namespace FifaTrackerServer.Controllers
             return result;
         }
         // GET: api/Matches/Previous
+        [Authorize]
         [HttpGet("Previous")]
         public async Task<ActionResult<IEnumerable<Match>>> GetPreviousMatches()
         {
@@ -72,9 +77,7 @@ namespace FifaTrackerServer.Controllers
 
         [HttpPut("UpdateScore/{matchId}")]
         public async Task<ActionResult> PutAddMember(int matchId, int creatorScore, int opponentScore)
-        {
-
-
+        {   
             var match = await _context.Matches.FindAsync(matchId);
 
             if(match == null)
@@ -92,8 +95,9 @@ namespace FifaTrackerServer.Controllers
         }
 
 
-            // GET: api/Matches/PreviousForTeam
-            [HttpGet("PreviousForTeam/{teamId}")]
+        // GET: api/Matches/PreviousForTeam
+        [Authorize]
+        [HttpGet("PreviousForTeam/{teamId}")]
         public async Task<ActionResult<IEnumerable<Match>>> GetPreviousForTeamMatches(int teamID)
         {
             var dateTime = DateTime.Now;
@@ -112,6 +116,7 @@ namespace FifaTrackerServer.Controllers
         }
 
         // GET: api/Matches/5
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<Match>> GetMatch(int id)
         {
@@ -158,6 +163,7 @@ namespace FifaTrackerServer.Controllers
 
         // POST: api/Matches
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<Match>> PostMatch(Match match)
         {
@@ -193,6 +199,7 @@ namespace FifaTrackerServer.Controllers
         }
 
         // DELETE: api/Matches/5
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteMatch(int id)
         {
@@ -208,6 +215,7 @@ namespace FifaTrackerServer.Controllers
             return NoContent();
         }
 
+        [Authorize]
         private bool MatchExists(int id)
         {
             return _context.Matches.Any(e => e.Id == id);

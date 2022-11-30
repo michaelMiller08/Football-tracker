@@ -4,6 +4,8 @@ import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import ToastMaker from "../ToastMaker";
+import { auth } from "../../Firebase App.js";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 export default function CreateGame(props) {
   const [open, setOpen] = React.useState(false);
@@ -12,6 +14,8 @@ export default function CreateGame(props) {
   const [opponentEmail, setOpponentEmail] = React.useState("");
   const [date, setDate] = React.useState(Date);
   const [time, setTime] = React.useState(Date);
+  const [user] = useAuthState(auth);
+
 
   const style = {
     position: "absolute",
@@ -27,6 +31,9 @@ export default function CreateGame(props) {
   };
 
   async function addMatch() {
+
+    //add validation here
+
     const Match = {
       date: date,
       time: time + ":00",
@@ -36,15 +43,20 @@ export default function CreateGame(props) {
       opponentScore: -1,
     };
 
+    handleClose();
+
     const response = await axios
-      .post("https://localhost:7156/api/Matches", Match)
-      .then(function(res) {
-        if(res.status == 201)
+      .post("https://localhost:7156/api/Matches", Match, {
+        headers:{
+          'Authorization': `Bearer ${user.accessToken}`
+        }
+      })
+      .then((x) => {
         new ToastMaker().ShowSuccessToast();
       })
       .catch(function (error) {
         new ToastMaker().ShowErrorToast(error.response.data);
-       })
+      });
   }
 
   return (
@@ -59,7 +71,7 @@ export default function CreateGame(props) {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <p id="modal-modal-title" variant="h2" component="h2">
+          <p id="modal-modal-title" variant="h2" component="h2" className="modal-modal-title">
             All fields are required to create a game
           </p>
           <div className="form">
